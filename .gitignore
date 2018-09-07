@@ -17,3 +17,5 @@ lint.xml
 protected_strings.xml
 .gradle
 /dist
+ReactivePlayBilling.iml
+

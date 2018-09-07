@@ -125,6 +125,18 @@ open class ReactivePlayBilling constructor(context: Context) : PurchasesUpdatedL
         }
     }
 
+    open fun querySubscriptionPurchases(): Single<List<Purchase>> {
+        return Single.create {
+            val queryResult = billingClient.queryPurchases(BillingClient.SkuType.SUBS)
+
+            if (queryResult.responseCode == BillingClient.BillingResponse.OK) {
+                it.onSuccess(queryResult.purchasesList)
+            } else {
+                it.onError(Throwable("Failed to query subscription purchases. Response code: ${queryResult.responseCode}"))
+            }
+        }
+    }
+
     open fun queryPurchaseHistory(): Observable<QueryPurchasesResponse> {
         return Observable.create {
             billingClient.queryPurchaseHistoryAsync(BillingClient.SkuType.INAPP) {
